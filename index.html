@@ -2,8 +2,55 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Car Reservation &amp; Invoice | Car Rental Services</title>
+    <meta
+      name="description"
+      content="Build a car rental reservation, add charges and promo codes, review a live total, and print or save a clean A4 invoice as PDF."
+    />
+    <meta name="keywords" content="car rental, car hire, reservation, booking, invoice, rental charges" />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#f5f7fa" />
+    <link rel="canonical" href="https://invoiceappui.netlify.app/" />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Car Rental Services" />
+    <meta property="og:title" content="Car Reservation &amp; Invoice | Car Rental Services" />
+    <meta
+      property="og:description"
+      content="Build a car rental reservation, add charges and promo codes, review a live total, and print or save a clean A4 invoice as PDF."
+    />
+    <meta property="og:url" content="https://invoiceappui.netlify.app/" />
+    <meta property="og:image" content="https://invoiceappui.netlify.app/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Car Reservation — build a booking and print its invoice" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Car Reservation &amp; Invoice | Car Rental Services" />
+    <meta
+      name="twitter:description"
+      content="Build a car rental reservation, add charges and promo codes, review a live total, and print or save a clean A4 invoice as PDF."
+    />
+    <meta name="twitter:image" content="https://invoiceappui.netlify.app/og-image.png" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Car Reservation",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Any",
+        "inLanguage": "en",
+        "description": "Create a car rental reservation, calculate charges and discounts, and print a clean A4 invoice.",
+        "url": "https://invoiceappui.netlify.app/",
+        "image": "https://invoiceappui.netlify.app/og-image.png"
+      }
+    </script>
+
     <script>
       (function () {
         try {
@@ -13,19 +60,23 @@
             : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
           document.documentElement.classList.toggle('dark', theme === 'dark');
           document.documentElement.dataset.theme = theme;
+          var themeMeta = document.querySelector('meta[name="theme-color"]');
+          if (themeMeta) themeMeta.setAttribute('content', theme === 'dark' ? '#0e1621' : '#f5f7fa');
         } catch (error) {
           document.documentElement.classList.remove('dark');
           document.documentElement.dataset.theme = 'light';
+          var fallbackMeta = document.querySelector('meta[name="theme-color"]');
+          if (fallbackMeta) fallbackMeta.setAttribute('content', '#f5f7fa');
         }
       })();
     </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <title>Car Reservation</title>
   </head>
   <body>
     <div id="root"></div>
