@@ -1,11 +1,36 @@
-# Preview the site
+# Car Reservation & Invoice
 
-This site provides a minimal setup to get an invoice based on your choice and can be downloaded in pdf of invoice afterwards.
+A small React app for building a car rental reservation, adding optional charges, applying promo codes, reviewing a live total, and printing a clean A4 invoice.
 
-## [Invoiceapp](https://invoiceappui.netlify.app/) 
+Live site: [invoiceappui.netlify.app](https://invoiceappui.netlify.app/)
 
-# React + Vite
+## Features
 
-This template provides a minimal setup to get React working in Vite with HMR.
+- Booking form for rental dates, vehicle, customer details, and add-ons
+- Live charge summary with `SAVE10` and `WELCOME5` promo codes
+- Invoice view at `?view=invoice` with **Print / Save as PDF** via the browser print dialog
+- Light and dark themes
 
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Development
+
+```bash
+npm install
+npm run dev
+```
+
+Open the URL Vite prints. `npm run preview` serves the production build locally.
+
+## Verification
+
+```bash
+npm run lint
+npm run build
+```
+
+No test suite or typecheck script is configured.
+
+## Notes
+
+- Vehicle data comes from `mockCars` in `src/store/useReservationStore.ts`; there is no backend or API client.
+- Rates and coupons are defined in `src/utils/reservationCharges.js`; the invoice view model is built in `src/utils/invoiceData.js`.
+- Current behavior specs live in `openspec/specs/`.
