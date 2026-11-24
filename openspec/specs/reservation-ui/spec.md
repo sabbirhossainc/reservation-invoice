@@ -6,17 +6,33 @@ Defines the observable presentation and interaction behavior of the car rental r
 
 ## Requirements
 
-### Requirement: Reservation header identifies the app and offers invoice download
+### Requirement: Reservation header identifies the app and offers invoice printing
 
-The page header SHALL display a brand mark, the title "Car Reservation", a subtitle describing booking details, add-ons, and billing summary, a "Download Invoice" action with a download icon, a "Print Invoice" action with a print icon, and a light/dark theme toggle with an accessible label and a Sun/Moon icon.
+The booking page header SHALL display a brand mark, the title "Car Reservation", a subtitle describing booking details, add-ons, and billing summary, a "Print Invoice" action with a print icon, and a light/dark theme toggle with an accessible label and a Sun/Moon icon. A separate "Download Invoice" action SHALL NOT be present because the printable invoice already offers Save as PDF.
 
 #### Scenario: Header is visible on page load
 - **WHEN** the reservation page is opened
-- **THEN** the brand mark, "Car Reservation" title, subtitle, "Download Invoice" action with a download icon, "Print Invoice" action with a print icon, and theme toggle are visible
+- **THEN** the brand mark, "Car Reservation" title, subtitle, "Print Invoice" action with a print icon, and theme toggle are visible, and no "Download Invoice" action is shown
 
 #### Scenario: Invoice action remains available
 - **WHEN** the viewport width changes from desktop to mobile
-- **THEN** the "Download Invoice" and "Print Invoice" actions stay visible in the header
+- **THEN** the "Print Invoice" action stays visible in the header
+
+### Requirement: The header is hidden in the invoice view
+
+The application header SHALL be shown only for the booking view. The invoice view SHALL instead provide "Back to booking" and "Print / Save as PDF" controls, including when the invoice view is opened directly via `?view=invoice`.
+
+#### Scenario: Header is hidden after printing
+- **WHEN** the user activates "Print Invoice"
+- **THEN** the invoice view opens without the brand header, theme toggle, or duplicate invoice actions
+
+#### Scenario: Direct invoice link has no header
+- **WHEN** the page loads with `?view=invoice`
+- **THEN** only the invoice toolbar and invoice document are displayed, with no application header
+
+#### Scenario: Return to booking restores the header
+- **WHEN** the user activates "Back to booking"
+- **THEN** the header is displayed again with the reservation state preserved
 
 #### Scenario: Theme toggle remains available
 - **WHEN** the viewport width changes from desktop to mobile
@@ -36,7 +52,7 @@ The page SHALL provide a print action that displays the printable HTML invoice f
 
 ### Requirement: Theme preference is selectable and persistent
 
-The page SHALL provide a light/dark toggle that applies the chosen mode immediately, initializes from a stored preference or the system color scheme (defaulting to light), and persists the selection across reloads before page content is visible.
+The page SHALL provide an icon-only light/dark toggle (Sun or Moon) in the header, sized and vertically aligned to match the "Print Invoice" button while keeping its accessible label. It applies the chosen mode immediately, initializes from a stored preference or the system color scheme (defaulting to light), and persists the selection across reloads before page content is visible.
 
 #### Scenario: Stored preference is used on load
 - **WHEN** the page loads after the user selected dark mode
@@ -78,6 +94,10 @@ On desktop widths the primary form content SHALL occupy eight columns of a twelv
 - **WHEN** the page is viewed at a phone or tablet width
 - **THEN** the form cards and Charges Summary appear in a single stacked column with no horizontal page scrollbar
 
+#### Scenario: Card spacing is uniform
+- **WHEN** the booking page is viewed at any supported width
+- **THEN** the gap between the header and the first card, between consecutive cards, and between the two desktop columns is the same spacing value; the sticky Charges Summary keeps that same gap from the header while scrolling
+
 ### Requirement: Related form fields are grouped in pairs inside cards
 
 The customer form SHALL present First Name with Last Name and Email with Phone side by side; the reservation form SHALL present Pickup Date with Return Date side by side; the vehicle form SHALL present Vehicle Type with Vehicle side by side.
@@ -92,11 +112,11 @@ The customer form SHALL present First Name with Last Name and Email with Phone s
 
 ### Requirement: Reservation ID is generated and read-only
 
-The reservation page SHALL display an auto-generated reservation identifier in the `#RE-####` format as a read-only badge; the user SHALL NOT be able to edit it.
+The reservation page SHALL display an auto-generated reservation identifier in the `#RE-####` format as a read-only pill badge in the Reservation Details card heading, beside the section title and description and right-aligned with the card content edge; the user SHALL NOT be able to edit it.
 
 #### Scenario: Identifier appears on load
 - **WHEN** the reservation page is opened
-- **THEN** a read-only badge displays an identifier matching `#RE-` followed by four digits
+- **THEN** a read-only pill badge displays an identifier matching `#RE-` followed by four digits at the right side of the Reservation Details heading
 
 #### Scenario: Identifier is not editable
 - **WHEN** the user interacts with the reservation identifier area
@@ -126,6 +146,10 @@ The Charges Summary SHALL provide a "Promo / Coupon Code" input and an Apply act
 - **WHEN** the user activates Apply with an empty or unrecognized code
 - **THEN** no discount is applied and inline feedback explains that the code is invalid
 
+#### Scenario: Applied coupon is confirmed in green
+- **WHEN** a valid coupon is applied
+- **THEN** the inline "applied" message and its check icon use the theme's success green, and the discount row in the Charges Summary table is highlighted in the same green family
+
 ### Requirement: Charges Summary displays the applied discount without overflow
 
 When a coupon is applied, the Charges Summary SHALL show a discount row with a negative amount and an updated Total; all table columns SHALL fit within the card at every supported viewport width without a horizontal scrollbar.
@@ -145,3 +169,23 @@ The page SHALL use a clean sans-serif UI typeface, monospace-style tabular figur
 #### Scenario: Financial and temporal values are easy to scan
 - **WHEN** the reservation page is viewed
 - **THEN** prices, dates, and the reservation identifier use tabular figures and section headers, relevant fields, and buttons display icons
+
+### Requirement: Form controls use a compact height
+
+All text inputs, selects, and buttons SHALL use a reduced vertical padding so the booking form is denser, while keeping labels, focus indicators, and theme contrast intact.
+
+#### Scenario: Inputs and buttons are compact
+- **WHEN** the booking form is viewed
+- **THEN** inputs and buttons are shorter in height than the labels and cards around them and remain fully legible and clickable
+
+### Requirement: Additional Charges options are arranged horizontally
+
+The Additional Charges card SHALL present the Collision Damage Waiver, Liability Insurance, and Rental Tax options as three side-by-side, individually labeled tiles at desktop widths; at narrow widths the tiles MAY stack to avoid overflow.
+
+#### Scenario: Options appear in one row on desktop
+- **WHEN** the Additional Charges card is viewed at a desktop width
+- **THEN** all three checkbox tiles appear in a single horizontal row with their labels and amounts visible
+
+#### Scenario: Options remain usable on narrow screens
+- **WHEN** the Additional Charges card is viewed at a phone width
+- **THEN** the tiles stack without horizontal page scrolling and each checkbox still toggles its charge

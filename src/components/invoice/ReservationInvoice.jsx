@@ -89,8 +89,8 @@ function ChargeSummary({ data }) {
         </tbody>
       </table>
       {data.couponRow && (
-        <div className="flex items-center justify-between gap-3 border-x border-b border-slate-300 bg-blue-50 px-2 py-1.5 text-[11px] font-bold text-blue-800">
-          <span className="rounded bg-blue-700 px-2 py-0.5 text-[9px] uppercase tracking-wider text-white">
+        <div className="flex items-center justify-between gap-3 border-x border-b border-slate-300 bg-green-100 px-2 py-1.5 text-[11px] font-bold text-green-800">
+          <span className="rounded bg-green-700 px-2 py-0.5 text-[9px] uppercase tracking-wider text-white">
             {data.couponRow.label}
           </span>
           <span>{data.couponRow.amount}</span>

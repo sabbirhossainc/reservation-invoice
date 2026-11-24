@@ -7,7 +7,7 @@ import { Card, SectionHeading } from "../components/ui";
 const money = (value) => `$${Number(value).toFixed(2)}`;
 
 const Cell = ({ children, className = "" }) => (
-  <td className={`px-1.5 py-2.5 align-top sm:px-2 sm:py-3 ${className}`}>{children}</td>
+  <td className={`px-1.5 py-1.5 align-top sm:px-2 sm:py-2 ${className}`}>{children}</td>
 );
 
 const ChargesSummary = () => {
@@ -83,7 +83,9 @@ const ChargesSummary = () => {
           <p
             role={feedback.type === "error" ? "alert" : "status"}
             className={`mt-2 flex items-center gap-1.5 text-xs ${
-              feedback.type === "error" ? "text-danger" : "text-accent"
+              feedback.type === "error"
+                ? "text-danger"
+                : "w-fit rounded-md py-px font-semibold text-success"
             }`}
           >
             {feedback.type === "error" ? (
@@ -149,9 +151,9 @@ const ChargesSummary = () => {
             </tr>
           )}
           {appliedCoupon && (
-            <tr className="text-accent">
-              <Cell>Discount ({appliedCoupon.code})</Cell>
-              <Cell className="text-muted">—</Cell>
+            <tr className="bg-success-soft text-success">
+              <Cell className="font-semibold">Discount ({appliedCoupon.code})</Cell>
+              <Cell className="text-success/70">—</Cell>
               <Cell className="numeric text-right">{appliedCoupon.label.split(" - ")[1]}</Cell>
               <Cell className="numeric text-right font-semibold">-{money(discount)}</Cell>
             </tr>
@@ -159,12 +161,12 @@ const ChargesSummary = () => {
         </tbody>
         <tfoot>
           <tr className="border-t-2 border-line">
-            <th scope="row" className="px-1.5 py-3 text-left text-sm font-semibold text-ink sm:px-2">
+            <th scope="row" className="px-1.5 py-2 text-left text-sm font-semibold text-ink sm:px-2">
               Total
             </th>
             <td />
             <td />
-            <td className="numeric px-1.5 py-3 text-right text-sm font-bold text-ink sm:px-2">
+            <td className="numeric px-1.5 py-2 text-right text-sm font-bold text-ink sm:px-2">
               {money(total)}
             </td>
           </tr>

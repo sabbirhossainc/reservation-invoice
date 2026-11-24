@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Defines the observable content, typography, and A4 print presentation of the car rental reservation invoice document, shared by the printable HTML view and the downloaded PDF so both present one consistent booking record.
+Defines the observable content, typography, and A4 print presentation of the car rental reservation invoice document. The printable HTML view is the single invoice output; users save it as a PDF through the browser's print dialog.
 
 ## Requirements
 
@@ -12,10 +12,6 @@ Every visible text element of the invoice document SHALL use the `'JetBrains Mon
 
 #### Scenario: Typography applies across the HTML invoice
 - **WHEN** the printable HTML invoice is displayed
-- **THEN** every visible text element uses JetBrains Mono with a Courier New monospace fallback and tabular numerals
-
-#### Scenario: Typography applies across the PDF invoice
-- **WHEN** the downloaded PDF invoice is opened
 - **THEN** every visible text element uses JetBrains Mono with a Courier New monospace fallback and tabular numerals
 
 #### Scenario: Numerical columns stay aligned
@@ -29,10 +25,6 @@ The invoice header SHALL display the brand mark, the company title "CAR RENTAL S
 #### Scenario: Header content is visible
 - **WHEN** the invoice is rendered with a generated reservation identifier
 - **THEN** the brand mark, company title, contact information, `#RE-####` badge, issue date, and status badge are visible with the badge block aligned to the right
-
-#### Scenario: Header is consistent across formats
-- **WHEN** the same reservation is rendered as HTML and as PDF
-- **THEN** both documents present the same header content and arrangement
 
 ### Requirement: Booking metadata appears in two bordered columns
 
@@ -68,11 +60,11 @@ The document SHALL present one full-width charge table with the columns `CHARGE 
 
 ### Requirement: Coupon badge and highlighted total close the charges
 
-The document SHALL show an applied coupon as a dedicated badge row labelled `Coupon Applied: <CODE>` with its negative discount amount directly above a highlighted `TOTAL` bar showing the final amount.
+The document SHALL show an applied coupon as a dedicated green badge row labelled `Coupon Applied: <CODE>` with its negative discount amount directly above a highlighted `TOTAL` bar showing the final amount.
 
 #### Scenario: Coupon appears above the total
 - **WHEN** SAVE10 is applied to the populated reservation
-- **THEN** a row reads `Coupon Applied: SAVE10` with `-$90.90` immediately above a highlighted TOTAL bar showing `$912.18`
+- **THEN** a green row reads `Coupon Applied: SAVE10` with `-$90.90` immediately above a highlighted TOTAL bar showing `$912.18`
 
 #### Scenario: No coupon leaves the total intact
 - **WHEN** no coupon is applied
@@ -106,14 +98,14 @@ The HTML invoice SHALL be presentable as a single A4 portrait page without appli
 - **WHEN** the invoice view is opened at a phone-width viewport
 - **THEN** all invoice sections remain readable without horizontal page scrolling
 
-### Requirement: PDF and HTML outputs use the same invoice data
+### Requirement: Printed invoice uses the live reservation data
 
-The HTML invoice and downloaded PDF SHALL render the same reservation metadata, charge rows, coupon, and total from a shared view of the reservation state.
+The HTML invoice SHALL render reservation metadata, charge rows, coupon, and total from the shared view of the reservation state used by the on-screen summary.
 
-#### Scenario: Same state produces matching documents
-- **WHEN** the same reservation state is rendered in HTML and exported to PDF
-- **THEN** both documents show identical metadata values, charge rows, coupon amount, and total
+#### Scenario: Printed invoice reflects current state
+- **WHEN** a reservation value changes and the printable invoice view is opened
+- **THEN** the invoice shows the updated metadata, charge rows, coupon amount, and total
 
-#### Scenario: Later edits are reflected in both formats
-- **WHEN** a reservation value changes and both outputs are viewed again
-- **THEN** both the HTML invoice and the downloaded PDF use the updated value
+#### Scenario: Saved PDF matches the on-screen invoice
+- **WHEN** the user saves the invoice as a PDF from the browser print dialog
+- **THEN** the saved document contains the same content as the printable HTML invoice

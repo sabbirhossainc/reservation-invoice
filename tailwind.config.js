@@ -23,6 +23,8 @@ export default {
         action: 'rgb(var(--color-action) / <alpha-value>)',
         'action-ink': 'rgb(var(--color-action-ink) / <alpha-value>)',
         danger: 'rgb(var(--color-danger) / <alpha-value>)',
+        success: 'rgb(var(--color-success) / <alpha-value>)',
+        'success-soft': 'rgb(var(--color-success-soft) / <alpha-value>)',
       },
     },
   },

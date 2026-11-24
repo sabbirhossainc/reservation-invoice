@@ -30,14 +30,13 @@ const ReservationDetails = () => {
         icon={CalendarDays}
         title="Reservation Details"
         description="Select the rental period for this booking"
+        action={
+          <span className="badge ml-auto shrink-0 self-center whitespace-nowrap">
+            {reservationId}
+          </span>
+        }
       />
       <form action="#" className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <div className="min-w-0 sm:col-span-2">
-          <span className="field-label">Reservation ID</span>
-          <div className="badge w-fit">
-            {reservationId}
-          </div>
-        </div>
         <Field label="Pickup Date" htmlFor="pickup-date" icon={CalendarDays} required>
           <input
             type="date"
@@ -60,7 +59,7 @@ const ReservationDetails = () => {
             required
           />
         </Field>
-        <div className="flex items-center justify-between gap-4 rounded-xl border border-line bg-surface-muted px-3 py-2.5 sm:col-span-2">
+        <div className="flex items-center justify-between gap-4 rounded-lg border border-line bg-surface-muted px-3 py-1.5 sm:col-span-2">
           <span className="field-label mb-0 flex items-center gap-2">
             <Clock size={16} aria-hidden="true" />
             Duration

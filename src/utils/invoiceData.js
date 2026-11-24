@@ -110,6 +110,3 @@ export function buildInvoiceData(reservation = {}, now = new Date()) {
   };
 }
 
-export function invoiceFilename(data) {
-  return `reservation-invoice-${data.filenameId || "RE-0000"}.pdf`;
-}

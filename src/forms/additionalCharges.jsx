@@ -41,23 +41,23 @@ const AdditionalCharges = () => {
         title="Additional Charges"
         description="Optional coverage and tax applied to the rental"
       />
-      <div className="space-y-2">
+      <div className="flex flex-wrap gap-1.5">
         {options.map((option) => (
           <label
             key={option.name}
             htmlFor={`charge-${option.name}`}
-            className="flex cursor-pointer items-center gap-3 rounded-xl border border-line bg-surface-muted px-3 py-2.5 transition hover:border-accent/50"
+            className="flex min-w-fit max-w-full cursor-pointer items-center gap-2 whitespace-nowrap rounded-lg border border-line bg-surface-muted px-2.5 py-1.5 transition hover:border-accent/50"
           >
             <input
               type="checkbox"
               id={`charge-${option.name}`}
               name={option.name}
-              className="size-4 shrink-0 rounded border-line accent-accent"
+              className="size-3.5 shrink-0 rounded border-line accent-accent"
               checked={option.checked}
               onChange={option.onChange}
             />
-            <span className="min-w-0 flex-1 text-sm text-ink">{option.label}</span>
-            <span className="numeric text-sm font-semibold text-ink">{option.amount}</span>
+            <span className="min-w-0 flex-1 text-xs text-ink">{option.label}</span>
+            <span className="numeric shrink-0 text-xs font-semibold text-ink">{option.amount}</span>
           </label>
         ))}
       </div>
