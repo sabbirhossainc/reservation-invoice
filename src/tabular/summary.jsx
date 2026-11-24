@@ -1,18 +1,52 @@
 import { useState } from "react";
-import { AlertCircle, Check, CheckCircle2, ReceiptText, Tag } from "lucide-react";
+import { AlertCircle, Check, CheckCircle2, ReceiptText, Sparkles, Tag } from "lucide-react";
 import { useReservationStore } from "../store/useReservationStore";
-import { calculateReservationCharges, resolveCoupon } from "../utils/reservationCharges.js";
+import { COUPONS, calculateReservationCharges, resolveCoupon } from "../utils/reservationCharges.js";
 import { Card, SectionHeading } from "../components/ui";
 
 const money = (value) => `$${Number(value).toFixed(2)}`;
+
+const DEMO_RESERVATION = {
+  firstName: "Alex",
+  lastName: "Morgan",
+  email: "alex.morgan@example.com",
+  phone: "+1 (555) 213-4567",
+  datePickup: "2026-12-01",
+  dateReturn: "2026-12-13",
+  vehicleType: "SUV",
+  vehicleMake: "Toyota",
+  collision: true,
+  liability: true,
+  rental: true,
+  couponCode: "SAVE10",
+};
 
 const Cell = ({ children, className = "" }) => (
   <td className={`px-1.5 py-1.5 align-top sm:px-2 sm:py-2 ${className}`}>{children}</td>
 );
 
 const ChargesSummary = () => {
-  const { weeks, days, collision, liability, rental, appliedCoupon, applyCoupon } =
-    useReservationStore();
+  const {
+    weeks,
+    days,
+    collision,
+    liability,
+    rental,
+    appliedCoupon,
+    applyCoupon,
+    setCollision,
+    setLiability,
+    setRental,
+    setDatePickup,
+    setDateReturn,
+    setFirstName,
+    setLastName,
+    setEmail,
+    setPhone,
+    setVehicleType,
+    setVehicleMake,
+    computeWeeksDays,
+  } = useReservationStore();
   const [couponInput, setCouponInput] = useState("");
   const [feedback, setFeedback] = useState(null);
 
@@ -28,6 +62,27 @@ const ChargesSummary = () => {
 
     applyCoupon(coupon);
     setFeedback({ type: "success", message: `${coupon.code} applied.` });
+  };
+
+  const handleFillDemo = () => {
+    setFirstName(DEMO_RESERVATION.firstName);
+    setLastName(DEMO_RESERVATION.lastName);
+    setEmail(DEMO_RESERVATION.email);
+    setPhone(DEMO_RESERVATION.phone);
+    setDatePickup(DEMO_RESERVATION.datePickup);
+    setDateReturn(DEMO_RESERVATION.dateReturn);
+    setVehicleType(DEMO_RESERVATION.vehicleType);
+    setVehicleMake(DEMO_RESERVATION.vehicleMake);
+    setCollision(DEMO_RESERVATION.collision);
+    setLiability(DEMO_RESERVATION.liability);
+    setRental(DEMO_RESERVATION.rental);
+    applyCoupon(COUPONS[DEMO_RESERVATION.couponCode]);
+    setCouponInput(DEMO_RESERVATION.couponCode);
+    setFeedback({
+      type: "success",
+      message: `${DEMO_RESERVATION.couponCode} applied.`,
+    });
+    computeWeeksDays();
   };
 
   const {
@@ -172,6 +227,15 @@ const ChargesSummary = () => {
           </tr>
         </tfoot>
       </table>
+      <div className="mt-5 border-t border-line pt-4">
+        <button type="button" onClick={handleFillDemo} className="btn-secondary w-full">
+          <Sparkles size={16} aria-hidden="true" />
+          Fill demo reservation
+        </button>
+        <p className="mt-2 text-center text-[11px] text-muted">
+          Fills every field with a sample booking and applies SAVE10.
+        </p>
+      </div>
     </Card>
   );
 };

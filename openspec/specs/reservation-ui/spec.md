@@ -150,6 +150,18 @@ The Charges Summary SHALL provide a "Promo / Coupon Code" input and an Apply act
 - **WHEN** a valid coupon is applied
 - **THEN** the inline "applied" message and its check icon use the theme's success green, and the discount row in the Charges Summary table is highlighted in the same green family
 
+### Requirement: Charges Summary offers a demo reservation fill
+
+The Charges Summary SHALL include a "Fill demo reservation" action below the totals table. When activated, it SHALL populate the customer name, email, phone, pickup and return dates, vehicle type, vehicle make, and all three additional-charge checkboxes with a complete sample booking. The demo SHALL represent a 12-day rental (1 week 5 days), activate every add-on, enter and apply `SAVE10`, show success feedback, and update the discount row and total.
+
+#### Scenario: Demo action fills the booking form
+- **WHEN** the user activates "Fill demo reservation"
+- **THEN** every editable reservation field shows the demo values and the duration reads `1 Week 5 Day`
+
+#### Scenario: Demo action applies the promo code
+- **WHEN** the demo reservation is filled
+- **THEN** the coupon input shows `SAVE10`, success feedback confirms `SAVE10`, and the summary shows the `SAVE10` discount row with a recalculated total of `$912.18`
+
 ### Requirement: Charges Summary displays the applied discount without overflow
 
 When a coupon is applied, the Charges Summary SHALL show a discount row with a negative amount and an updated Total; all table columns SHALL fit within the card at every supported viewport width without a horizontal scrollbar.

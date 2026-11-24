@@ -5,6 +5,7 @@ A small React app for building a car rental reservation, adding optional charges
 ## Features
 
 - Booking form for rental dates, vehicle, customer details, and add-ons
+- **Fill demo reservation** action that populates every field and applies `SAVE10`
 - Live charge summary with `SAVE10` and `WELCOME5` promo codes
 - Invoice view at `?view=invoice` with **Print / Save as PDF** via the browser print dialog, which suggests `reservation-invoice-{ID}-{date}.pdf`
 - Light and dark themes
