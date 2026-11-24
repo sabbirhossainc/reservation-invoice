@@ -1,4 +1,8 @@
-const additionalCharges = (props) => {
+import { useReservationStore } from "../store/useReservationStore";
+
+const AdditionalCharges = () => {
+  const { collision, liability, rental, setCollision, setLiability, setRental } = useReservationStore();
+
   return (
     <div className="pt-8 mx-auto max-w-3xl">
       <h2 className="mb-6 pb-1 text-xl font-medium text-gray-900 border-b-2 border-primary-500">
@@ -11,8 +15,8 @@ const additionalCharges = (props) => {
               type="checkbox"
               name="collision"
               className="size-4"
-              checked={props.collision}
-              onChange={props.onChange}
+              checked={collision}
+              onChange={() => setCollision(!collision)}
             />
             <label className="inline-block text-base font-light text-gray-900 px-2">
               Collision Damage Waiver <span className="text-red-600"></span>
@@ -24,8 +28,8 @@ const additionalCharges = (props) => {
               type="checkbox"
               name="liability"
               className="size-4"
-              checked={props.liability}
-              onChange={props.onChange}
+              checked={liability}
+              onChange={() => setLiability(!liability)}
             />
             <label className="inline-block text-base font-light text-gray-900 px-2">
               Liability Insurance <span className="text-red-600"></span>
@@ -37,8 +41,8 @@ const additionalCharges = (props) => {
               type="checkbox"
               name="rental"
               className="size-4"
-              checked={props.rental}
-              onChange={props.onChange}
+              checked={rental}
+              onChange={() => setRental(!rental)}
             />
             <label className="inline-block text-base font-light text-gray-900 px-2">
               Rental Tax <span className="text-red-600"></span>
@@ -51,4 +55,4 @@ const additionalCharges = (props) => {
   );
 };
 
-export default additionalCharges;
+export default AdditionalCharges;

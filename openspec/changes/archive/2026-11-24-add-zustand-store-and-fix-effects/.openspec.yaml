@@ -1,0 +1,7 @@
+schema: spec-driven
+created: 2026-11-22
+x-followups:
+  - "Persist reservation state to localStorage or a backend if users need to resume later."
+  - "Replace mockCars with a real vehicle API when an authenticated endpoint is available."
+  - "Refine the generated PDF layout to match the Sample Invoice.pdf more closely if a layout specification becomes available."
+  - "Consider code-splitting jsPDF because the production bundle warns about chunks over 500 kB."

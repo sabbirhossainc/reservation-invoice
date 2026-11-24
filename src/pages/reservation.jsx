@@ -1,5 +1,9 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { jsPDF } from "jspdf";
+import {
+  useReservationStore,
+  mockCars,
+} from "../store/useReservationStore";
 import AdditionalCharges from "../forms/additionalCharges";
 import CustomerInfo from "../forms/customerInfo";
 import ReservationDetails from "../forms/reservationDetails";
@@ -7,159 +11,114 @@ import VehicleInfo from "../forms/vehicleInfo";
 import ChargesSummary from "../tabular/summary";
 
 function Reservation() {
-  
-  // Additional charges states
-  const [products, setProducts] = useState();
-  const [collision, setCollision] = useState(true);
-  const [liability, setLiability] = useState(false);
-  const [rental, setRental] = useState(false);
-
-  // Date range states
-  const [datePickup, setDatePickup] = useState([]);
-  const [dateReturn, setDateReturn] = useState([]);
-  const [weeks, setWeeks] = useState();
-  const [days, setDays] = useState();
-
-  // Additional charges functions
-  const handleChange = (e) => {
-    if (e.target.name === "collision") {
-      setCollision(!collision);
-      handleAdd0();
-    } else if (e.target.name === "liability") {
-      setLiability(!liability);
-      handleAdd1();
-    } else if (e.target.name === "rental") {
-      setRental(!rental);
-      handleAdd2();
-    }
-  };
-
-  const handleAdd0 = () => {
-    let classes = "hidden";
-    if (collision === true) {
-      classes -= "hidden";
-    } else {
-      classes += "";
-    }
-    return classes;
-  };
-
-  const handleAdd1 = () => {
-    let classes = "hidden";
-    if (liability === true) {
-      classes -= "hidden";
-    } else {
-      classes += "";
-    }
-    return classes;
-  };
-
-  const handleAdd2 = () => {
-    let classes = "hidden";
-    if (rental === true) {
-      classes -= "hidden";
-    } else {
-      classes += "";
-    }
-    return classes;
-  };
-
-  // Date range functions
-  const handlePickup = (e) => {
-    setDatePickup(e.target.value);
-  };
-
-  const handelReturn = (e) => {
-    setDateReturn(e.target.value);
-  };
-
-  const getDateRange = () => {
-    let date1 = new Date(datePickup);
-    let date2 = new Date(dateReturn);
-    let Difference_In_Time;
-    let Difference_In_Days;
-    let obj;
-
-    // Calculating the time difference no. of days between two dates
-    if (date2.getTime() > date1.getTime()) {
-      Difference_In_Time = Math.abs(date2.getTime() - date1.getTime());
-      Difference_In_Days = Math.round(Difference_In_Time / (1000 * 3600 * 24));
-    } else {
-      Difference_In_Days = 0;
-    }
-
-    // Extracting weeks and days
-    function getWeeks(days) {
-      return {
-        weeks: Math.floor(days / 7),
-        days: Math.floor(days % 7),
-      };
-    }
-    obj = getWeeks(Difference_In_Days);
-
-    // To display result
-    setWeeks(obj.weeks);
-    setDays(obj.days);
-  };
-
-  // fetching data form api
-  const callAxios = async () => {
-    const fetchUrl = "https://exam-server-7c41747804bf.herokuapp.com/carsList";
-    axios
-      .get(fetchUrl)
-      .then((response) => {
-        const getItems = response.data;
-        setProducts(getItems.data);
-      })
-      .catch((er) => er.message);
-  };
+  const {
+    collision,
+    liability,
+    rental,
+    datePickup,
+    dateReturn,
+    weeks,
+    days,
+    reservationId,
+    discount,
+    firstName,
+    lastName,
+    email,
+    phone,
+    vehicleType,
+    vehicleMake,
+    setProducts,
+  } = useReservationStore();
 
   useEffect(() => {
-    callAxios();
-    getDateRange();
-  });
+    setProducts(mockCars);
+  }, [setProducts]);
+
+  const collisionRate = collision ? 9 : 0;
+  const liabilityRate = liability ? 15 : 0;
+  const rentalRate = rental ? 11.5 : 0;
+  const totalDaysRate = days * 99;
+  const totalWeeksRate = weeks * 390;
+  const subtotal = totalDaysRate + totalWeeksRate + collisionRate + liabilityRate;
+  const taxAmount = subtotal * (rentalRate / 100);
+  const total = subtotal + taxAmount;
+
+  const downloadInvoice = () => {
+    const doc = new jsPDF();
+    let y = 16;
+
+    doc.setFontSize(18);
+    doc.text("Reservation Invoice", 14, y);
+    y += 10;
+
+    doc.setFontSize(11);
+    doc.text(`Reservation ID: ${reservationId || "-"}`, 14, y);
+    y += 7;
+    doc.text(
+      `Customer: ${[firstName, lastName].filter(Boolean).join(" ") || "-"}`,
+      14,
+      y
+    );
+    y += 7;
+    doc.text(`Email: ${email || "-"}`, 14, y);
+    y += 7;
+    doc.text(`Phone: ${phone || "-"}`, 14, y);
+    y += 7;
+    doc.text(`Vehicle: ${[vehicleType, vehicleMake].filter(Boolean).join(" ") || "-"}`, 14, y);
+    y += 7;
+    doc.text(`Pickup: ${datePickup || "-"}`, 14, y);
+    y += 7;
+    doc.text(`Return: ${dateReturn || "-"}`, 14, y);
+    y += 7;
+    doc.text(`Duration: ${weeks} Week ${days} Day`, 14, y);
+    y += 10;
+
+    doc.setFontSize(12);
+    doc.text("Charges", 14, y);
+    y += 7;
+    doc.setFontSize(11);
+    doc.text(`Daily (${days} x $99.00): $${totalDaysRate.toFixed(2)}`, 14, y);
+    y += 7;
+    doc.text(`Weekly (${weeks} x $390.00): $${totalWeeksRate.toFixed(2)}`, 14, y);
+    y += 7;
+    doc.text(`Collision Damage Waiver: $${collisionRate.toFixed(2)}`, 14, y);
+    y += 7;
+    doc.text(`Liability Insurance: $${liabilityRate.toFixed(2)}`, 14, y);
+    y += 7;
+    doc.text(`Discount: ${discount || "-"}`, 14, y);
+    y += 7;
+    doc.text(`Rental Tax (${rentalRate}%): $${taxAmount.toFixed(2)}`, 14, y);
+    y += 9;
+
+    doc.setFontSize(13);
+    doc.text(`Total: $${total.toFixed(2)}`, 14, y);
+
+    doc.save("reservation-invoice.pdf");
+  };
 
   return (
     <>
       <div className="max-w-full mx-36 my-12">
-        {/* Title */}
         <div className="flex items-center justify-between">
           <h1 className="text-xl font-bold">Reservation</h1>
-          <button className="flex justify-center items-center px-5 py-3 bg-indigo-500 text-xs font-semibold text-gray-50 rounded-md">
-            Print / Download
+          <button
+            className="flex justify-center items-center px-5 py-3 bg-indigo-500 text-xs font-semibold text-gray-50 rounded-md"
+            onClick={downloadInvoice}
+          >
+            Download Invoice
           </button>
         </div>
-        {/* Body */}
         <div className="grid grid-cols-12 gap-8 max-w-full">
           <div className="col-span-4">
-            <ReservationDetails
-              fromDate={handlePickup}
-              toDate={handelReturn}
-              weeks={weeks}
-              days={days}
-            />
-            {products ? <VehicleInfo data={products} /> : null}
+            <ReservationDetails />
+            <VehicleInfo />
           </div>
           <div className="col-span-4">
             <CustomerInfo />
-            <AdditionalCharges
-              onChange={handleChange}
-              collision={collision}
-              liability={liability}
-              rental={rental}
-            />
+            <AdditionalCharges />
           </div>
           <div className="col-span-4">
-            <ChargesSummary
-              collision={handleAdd0()}
-              liability={handleAdd1()}
-              rental={handleAdd2()}
-              weeks={weeks}
-              days={days}
-              collisionState={collision}
-              liabilityState={liability}
-              rentalState={rental}
-            />
+            <ChargesSummary />
           </div>
         </div>
       </div>

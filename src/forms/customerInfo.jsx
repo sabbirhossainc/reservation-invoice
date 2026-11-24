@@ -1,4 +1,17 @@
+import { useReservationStore } from "../store/useReservationStore";
+
 const customerInfo = () => {
+  const {
+    firstName,
+    lastName,
+    email,
+    phone,
+    setFirstName,
+    setLastName,
+    setEmail,
+    setPhone,
+  } = useReservationStore();
+
   return (
     <div className="pt-8 mx-auto max-w-3xl">
       <h2 className="mb-6 pb-1 text-xl font-medium text-gray-900 border-b-2 border-primary-500">
@@ -16,7 +29,9 @@ const customerInfo = () => {
               id="first-name"
               className="border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-primary-500  block w-full p-2"
               placeholder="Type first name"
-              required="true"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              required
             />
           </div>
           <div className="">
@@ -29,7 +44,9 @@ const customerInfo = () => {
               id="last-name"
               className="border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-primary-500 block w-full p-2"
               placeholder="Type last name"
-              required="true"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              required
             />
           </div>
           <div className="">
@@ -42,7 +59,9 @@ const customerInfo = () => {
               id="email"
               className="border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-primary-500 block w-full p-2"
               placeholder="Type email"
-              required="true"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
             />
           </div>
           <div className="">
@@ -55,7 +74,9 @@ const customerInfo = () => {
               id="phone-input"
               className="border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-primary-500 block w-full p-2"
               placeholder="Type phone number"
-              required="true"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              required
             />
           </div>
         </div>

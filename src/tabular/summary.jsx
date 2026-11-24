@@ -1,23 +1,23 @@
-const summary = (props) => {
-  let totalDaysRate = props.days * 99;
-  let totalWeeksRate = props.weeks * 390;
-  let collisionRate = 0;
-  let liabilityRate = 0;
-  let rentalRate = 0;
+import { useReservationStore } from "../store/useReservationStore";
 
-  if (props.collisionState === true) {
-   collisionRate = 9;
-  } if (props.liabilityState === true) {
-    liabilityRate = 15;
-  } if (props.rentalState === true) {
-   rentalRate = 11.5;
-  } 
+const ChargesSummary = () => {
+  const {
+    weeks,
+    days,
+    collision,
+    liability,
+    rental,
+  } = useReservationStore();
 
-  let withRentalRate = (totalDaysRate+totalWeeksRate+collisionRate+liabilityRate)*(rentalRate/100);
+  let totalDaysRate = days * 99;
+  let totalWeeksRate = weeks * 390;
+  let collisionRate = collision ? 9 : 0;
+  let liabilityRate = liability ? 15 : 0;
+  let rentalRate = rental ? 11.5 : 0;
 
-  let total = totalDaysRate+totalWeeksRate+collisionRate+liabilityRate+withRentalRate;
+  let withRentalRate = (totalDaysRate + totalWeeksRate + collisionRate + liabilityRate) * (rentalRate / 100);
 
-          
+  let total = totalDaysRate + totalWeeksRate + collisionRate + liabilityRate + withRentalRate;
 
   return (
     <div className="pt-8 max-w-3xl">
@@ -45,29 +45,29 @@ const summary = (props) => {
           <tbody>
             <tr>
               <td className="px-2 py-4 ">Daily</td>
-              <td className="px-2 py-4 ">{props.days}</td>
+              <td className="px-2 py-4 ">{days}</td>
               <td className="px-2 py-4 ">$99.00</td>
               <td className="px-2 py-4 ">${totalDaysRate}.00</td>
             </tr>
             <tr>
               <td className="px-2 py-4 ">Weekly</td>
-              <td className="px-2 py-4 ">{props.weeks}</td>
+              <td className="px-2 py-4 ">{weeks}</td>
               <td className="px-2 py-4 ">$390.00</td>
               <td className="px-2 py-4 ">${totalWeeksRate}.00</td>
             </tr>
-            <tr className={`${props.collision}`} >
+            <tr className={`${collision ? "" : "hidden"}`} >
               <td className="px-2 py-4">Collision Damage Waiver</td>
               <td></td>
               <td className="px-2 py-4">$9.00</td>
               <td className="px-2 py-4">${collisionRate}.00</td>
             </tr>
-            <tr className={`${props.liability}`}>
+            <tr className={`${liability ? "" : "hidden"}`}>
               <td className="px-2 py-4">Liability Insurance</td>
               <td></td>
               <td className="px-2 py-4">$15.00</td>
               <td className="px-2 py-4">${liabilityRate}.00</td>
             </tr>
-            <tr className={`${props.rental}`}>
+            <tr className={`${rental ? "" : "hidden"}`}>
               <td className="px-2 py-4">Rental Tax</td>
               <td></td>
               <td></td>
@@ -92,4 +92,4 @@ const summary = (props) => {
   );
 };
 
-export default summary;
+export default ChargesSummary;

@@ -1,4 +1,30 @@
-const reservationDetails = (props) => {
+import { useReservationStore } from "../store/useReservationStore";
+
+const reservationDetails = () => {
+  const {
+    weeks,
+    days,
+    reservationId,
+    discount,
+    datePickup,
+    dateReturn,
+    setReservationId,
+    setDiscount,
+    setDatePickup,
+    setDateReturn,
+    computeWeeksDays,
+  } = useReservationStore();
+
+  const handlePickup = (e) => {
+    setDatePickup(e.target.value);
+    computeWeeksDays();
+  };
+
+  const handleReturn = (e) => {
+    setDateReturn(e.target.value);
+    computeWeeksDays();
+  };
+
   return (
     <div className="pt-8 mx-auto max-w-3xl">
       <h2 className="mb-6 pb-1 text-xl font-medium text-gray-900 border-b-2 border-primary-500">
@@ -8,7 +34,7 @@ const reservationDetails = (props) => {
         <div className="flex flex-col gap-4 p-4 border border-gray-300 rounded-md">
           <div className="">
             <label className="block mb-2 text-sm font-light text-gray-900">
-              Reservation ID <span className="text-red-600"></span>
+              Reservation ID
             </label>
             <input
               type="text"
@@ -16,7 +42,8 @@ const reservationDetails = (props) => {
               id="reservation"
               className="border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-primary-500 focus:border-primary-500 block w-full p-2"
               placeholder="Type reservation id"
-              required=""
+              value={reservationId}
+              onChange={(e) => setReservationId(e.target.value)}
             />
           </div>
           <div className="">
@@ -28,8 +55,9 @@ const reservationDetails = (props) => {
               name="pickup-date"
               id="pickup-date"
               className="border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-primary-500 focus:border-primary-500 block w-full p-2"
-              placeholder="Select Date and Time"
-              onChange={props.fromDate}
+              value={datePickup}
+              onChange={handlePickup}
+              required
             />
           </div>
           <div className="">
@@ -41,26 +69,27 @@ const reservationDetails = (props) => {
               name="return-date"
               id="return-date"
               className="border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-primary-500 focus:border-primary-500 block w-full p-2"
-              placeholder="Select Date and Time"
-              onChange={props.toDate}
+              value={dateReturn}
+              onChange={handleReturn}
+              required
             />
           </div>
           <div className="flex items-center justify-between">
             <label className="block text-sm font-light text-gray-900">
-              Duration <span className="text-red-600"></span>
+              Duration
             </label>
             <div
               id="duration"
               className="border border-gray-300 text-gray-900 text-sm rounded-md p-2 px-12 w-auto text-center"
             >
               <p className="text-gray-500">
-                {props.weeks} Week {props.days} Day
+                {weeks} Week {days} Day
               </p>
             </div>
           </div>
           <div className="">
             <label className="block mb-2 text-sm font-light text-gray-900">
-              Discount <span className="text-red-600"></span>
+              Discount
             </label>
             <input
               type="text"
@@ -68,7 +97,8 @@ const reservationDetails = (props) => {
               id="discount"
               className="border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-primary-500 focus:border-primary-500 block w-full p-2"
               placeholder="Type discount"
-              required=""
+              value={discount}
+              onChange={(e) => setDiscount(e.target.value)}
             />
           </div>
         </div>
