@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CarFront, Moon, Printer, Sun } from "lucide-react";
 import { buildInvoiceData } from "../utils/invoiceData.js";
 import ReservationInvoice from "../components/invoice/ReservationInvoice.jsx";
@@ -16,6 +16,7 @@ const readView = () =>
 function Reservation() {
   const { isDark, toggleTheme } = useTheme();
   const [view, setView] = useState(readView);
+  const originalTitleRef = useRef(document.title);
   const {
     collision,
     liability,
@@ -63,6 +64,15 @@ function Reservation() {
     vehicleMake,
   };
   const invoiceData = buildInvoiceData(snapshot);
+
+  useEffect(() => {
+    if (view !== "invoice") return;
+
+    document.title = invoiceData.filename;
+    return () => {
+      document.title = originalTitleRef.current;
+    };
+  }, [view, invoiceData.filename]);
 
   const changeView = (nextView) => {
     const url = new URL(window.location.href);

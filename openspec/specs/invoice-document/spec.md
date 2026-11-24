@@ -98,6 +98,18 @@ The HTML invoice SHALL be presentable as a single A4 portrait page without appli
 - **WHEN** the invoice view is opened at a phone-width viewport
 - **THEN** all invoice sections remain readable without horizontal page scrolling
 
+### Requirement: Save as PDF suggests a reservation-specific filename
+
+The invoice view SHALL set the document title to `reservation-invoice-{ID}-{date}.pdf`, where `{ID}` is the reservation identifier with the leading `#` and unsupported characters removed and `{date}` is the issue date in `YYYY-MM-DD` format, so the browser's Save as PDF dialog offers that filename. The site title SHALL be restored when leaving the invoice view.
+
+#### Scenario: Invoice view prepares the PDF filename
+- **WHEN** the invoice view is opened for reservation `#RE-1234` with issue date `2026-11-24`
+- **THEN** the document title is `reservation-invoice-RE-1234-2026-11-24.pdf`
+
+#### Scenario: Booking view keeps the original title
+- **WHEN** the user returns from the invoice view to booking
+- **THEN** the document title is restored to the site title
+
 ### Requirement: Printed invoice uses the live reservation data
 
 The HTML invoice SHALL render reservation metadata, charge rows, coupon, and total from the shared view of the reservation state used by the on-screen summary.

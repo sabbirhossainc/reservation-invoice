@@ -38,14 +38,17 @@ export function buildInvoiceData(reservation = {}, now = new Date()) {
   const fullName = [reservation.firstName, reservation.lastName].filter(Boolean).join(" ");
   const duration = formatDuration(reservation.weeks, reservation.days);
   const reservationId = asText(reservation.reservationId);
+  const issueDate = formatIssueDate(now);
+  const filenameId = reservationId.replace(/^#/, "").replace(/[^A-Za-z0-9_-]/g, "");
   const coupon = reservation.appliedCoupon;
 
   return {
     brandTitle: BRAND_TITLE,
     contact: BRAND_CONTACT,
     reservationId,
-    filenameId: reservationId.replace(/^#/, "").replace(/[^A-Za-z0-9_-]/g, ""),
-    issueDate: formatIssueDate(now),
+    filenameId,
+    filename: `reservation-invoice-${filenameId || "reservation"}-${issueDate}.pdf`,
+    issueDate,
     status: INVOICE_STATUS,
     duration,
     leftSections: [

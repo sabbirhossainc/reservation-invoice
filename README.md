@@ -2,13 +2,11 @@
 
 A small React app for building a car rental reservation, adding optional charges, applying promo codes, reviewing a live total, and printing a clean A4 invoice.
 
-Live site: [invoiceappui.netlify.app](https://invoiceappui.netlify.app/)
-
 ## Features
 
 - Booking form for rental dates, vehicle, customer details, and add-ons
 - Live charge summary with `SAVE10` and `WELCOME5` promo codes
-- Invoice view at `?view=invoice` with **Print / Save as PDF** via the browser print dialog
+- Invoice view at `?view=invoice` with **Print / Save as PDF** via the browser print dialog, which suggests `reservation-invoice-{ID}-{date}.pdf`
 - Light and dark themes
 
 ## Development
