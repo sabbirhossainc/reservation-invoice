@@ -1,4 +1,4 @@
-import { CalendarDays, Clock, Hash } from "lucide-react";
+import { CalendarDays, Clock } from "lucide-react";
 import { useReservationStore } from "../store/useReservationStore";
 import { Card, Field, SectionHeading } from "../components/ui";
 
@@ -35,7 +35,6 @@ const ReservationDetails = () => {
         <div className="min-w-0 sm:col-span-2">
           <span className="field-label">Reservation ID</span>
           <div className="badge w-fit">
-            <Hash size={14} aria-hidden="true" />
             {reservationId}
           </div>
         </div>
