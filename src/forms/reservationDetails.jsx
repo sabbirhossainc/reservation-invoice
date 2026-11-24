@@ -1,15 +1,14 @@
+import { CalendarDays, Clock, Hash } from "lucide-react";
 import { useReservationStore } from "../store/useReservationStore";
+import { Card, Field, SectionHeading } from "../components/ui";
 
-const reservationDetails = () => {
+const ReservationDetails = () => {
   const {
     weeks,
     days,
     reservationId,
-    discount,
     datePickup,
     dateReturn,
-    setReservationId,
-    setDiscount,
     setDatePickup,
     setDateReturn,
     computeWeeksDays,
@@ -26,85 +25,54 @@ const reservationDetails = () => {
   };
 
   return (
-    <div className="pt-8 mx-auto max-w-3xl">
-      <h2 className="mb-6 pb-1 text-xl font-medium text-gray-900 border-b-2 border-primary-500">
-        Reservation Details
-      </h2>
-      <form action="#">
-        <div className="flex flex-col gap-4 p-4 border border-gray-300 rounded-md">
-          <div className="">
-            <label className="block mb-2 text-sm font-light text-gray-900">
-              Reservation ID
-            </label>
-            <input
-              type="text"
-              name="reservation"
-              id="reservation"
-              className="border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-primary-500 focus:border-primary-500 block w-full p-2"
-              placeholder="Type reservation id"
-              value={reservationId}
-              onChange={(e) => setReservationId(e.target.value)}
-            />
-          </div>
-          <div className="">
-            <label className="block mb-2 text-sm font-light text-gray-900">
-              Pickup Date <span className="text-red-600">*</span>
-            </label>
-            <input
-              type="date"
-              name="pickup-date"
-              id="pickup-date"
-              className="border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-primary-500 focus:border-primary-500 block w-full p-2"
-              value={datePickup}
-              onChange={handlePickup}
-              required
-            />
-          </div>
-          <div className="">
-            <label className="block mb-2 text-sm font-light text-gray-900">
-              Return Date <span className="text-red-600">*</span>
-            </label>
-            <input
-              type="date"
-              name="return-date"
-              id="return-date"
-              className="border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-primary-500 focus:border-primary-500 block w-full p-2"
-              value={dateReturn}
-              onChange={handleReturn}
-              required
-            />
-          </div>
-          <div className="flex items-center justify-between">
-            <label className="block text-sm font-light text-gray-900">
-              Duration
-            </label>
-            <div
-              id="duration"
-              className="border border-gray-300 text-gray-900 text-sm rounded-md p-2 px-12 w-auto text-center"
-            >
-              <p className="text-gray-500">
-                {weeks} Week {days} Day
-              </p>
-            </div>
-          </div>
-          <div className="">
-            <label className="block mb-2 text-sm font-light text-gray-900">
-              Discount
-            </label>
-            <input
-              type="text"
-              name="discount"
-              id="discount"
-              className="border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-primary-500 focus:border-primary-500 block w-full p-2"
-              placeholder="Type discount"
-              value={discount}
-              onChange={(e) => setDiscount(e.target.value)}
-            />
+    <Card>
+      <SectionHeading
+        icon={CalendarDays}
+        title="Reservation Details"
+        description="Select the rental period for this booking"
+      />
+      <form action="#" className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div className="min-w-0 sm:col-span-2">
+          <span className="field-label">Reservation ID</span>
+          <div className="badge w-fit">
+            <Hash size={14} aria-hidden="true" />
+            {reservationId}
           </div>
         </div>
+        <Field label="Pickup Date" htmlFor="pickup-date" icon={CalendarDays} required>
+          <input
+            type="date"
+            name="pickup-date"
+            id="pickup-date"
+            className="field-control numeric pl-10"
+            value={datePickup}
+            onChange={handlePickup}
+            required
+          />
+        </Field>
+        <Field label="Return Date" htmlFor="return-date" icon={CalendarDays} required>
+          <input
+            type="date"
+            name="return-date"
+            id="return-date"
+            className="field-control numeric pl-10"
+            value={dateReturn}
+            onChange={handleReturn}
+            required
+          />
+        </Field>
+        <div className="flex items-center justify-between gap-4 rounded-xl border border-line bg-surface-muted px-3 py-2.5 sm:col-span-2">
+          <span className="field-label mb-0 flex items-center gap-2">
+            <Clock size={16} aria-hidden="true" />
+            Duration
+          </span>
+          <span className="numeric text-sm font-semibold text-ink">
+            {weeks} Week {days} Day
+          </span>
+        </div>
       </form>
-    </div>
+    </Card>
   );
 };
 
-export default reservationDetails;
+export default ReservationDetails;

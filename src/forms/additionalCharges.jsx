@@ -1,57 +1,67 @@
+import { ShieldCheck } from "lucide-react";
 import { useReservationStore } from "../store/useReservationStore";
+import {
+  COLLISION_RATE,
+  LIABILITY_RATE,
+  RENTAL_TAX_PERCENT,
+} from "../utils/reservationCharges.js";
+import { Card, SectionHeading } from "../components/ui";
 
 const AdditionalCharges = () => {
   const { collision, liability, rental, setCollision, setLiability, setRental } = useReservationStore();
 
+  const options = [
+    {
+      name: "collision",
+      label: "Collision Damage Waiver",
+      amount: `$${COLLISION_RATE.toFixed(2)}`,
+      checked: collision,
+      onChange: () => setCollision(!collision),
+    },
+    {
+      name: "liability",
+      label: "Liability Insurance",
+      amount: `$${LIABILITY_RATE.toFixed(2)}`,
+      checked: liability,
+      onChange: () => setLiability(!liability),
+    },
+    {
+      name: "rental",
+      label: "Rental Tax",
+      amount: `${RENTAL_TAX_PERCENT}%`,
+      checked: rental,
+      onChange: () => setRental(!rental),
+    },
+  ];
+
   return (
-    <div className="pt-8 mx-auto max-w-3xl">
-      <h2 className="mb-6 pb-1 text-xl font-medium text-gray-900 border-b-2 border-primary-500">
-        Additional Charges
-      </h2>
-      <form action="#">
-        <div className="flex flex-col gap-4 p-4 border border-gray-300 rounded-md">
-          <div className="flex items-center justify-between w-full">
+    <Card>
+      <SectionHeading
+        icon={ShieldCheck}
+        title="Additional Charges"
+        description="Optional coverage and tax applied to the rental"
+      />
+      <div className="space-y-2">
+        {options.map((option) => (
+          <label
+            key={option.name}
+            htmlFor={`charge-${option.name}`}
+            className="flex cursor-pointer items-center gap-3 rounded-xl border border-line bg-surface-muted px-3 py-2.5 transition hover:border-accent/50"
+          >
             <input
               type="checkbox"
-              name="collision"
-              className="size-4"
-              checked={collision}
-              onChange={() => setCollision(!collision)}
+              id={`charge-${option.name}`}
+              name={option.name}
+              className="size-4 shrink-0 rounded border-line accent-accent"
+              checked={option.checked}
+              onChange={option.onChange}
             />
-            <label className="inline-block text-base font-light text-gray-900 px-2">
-              Collision Damage Waiver <span className="text-red-600"></span>
-            </label>
-            <p className="text-gray-900 text-sm ml-auto">$9.00</p>
-          </div>
-          <div className="flex items-center justify-between w-full">
-            <input
-              type="checkbox"
-              name="liability"
-              className="size-4"
-              checked={liability}
-              onChange={() => setLiability(!liability)}
-            />
-            <label className="inline-block text-base font-light text-gray-900 px-2">
-              Liability Insurance <span className="text-red-600"></span>
-            </label>
-            <p className="text-gray-900 text-sm ml-auto">$15.00</p>
-          </div>
-          <div className="flex items-center justify-between w-full">
-            <input
-              type="checkbox"
-              name="rental"
-              className="size-4"
-              checked={rental}
-              onChange={() => setRental(!rental)}
-            />
-            <label className="inline-block text-base font-light text-gray-900 px-2">
-              Rental Tax <span className="text-red-600"></span>
-            </label>
-            <p className="text-gray-900 text-sm ml-auto">11.5%</p>
-          </div>
-        </div>
-      </form>
-    </div>
+            <span className="min-w-0 flex-1 text-sm text-ink">{option.label}</span>
+            <span className="numeric text-sm font-semibold text-ink">{option.amount}</span>
+          </label>
+        ))}
+      </div>
+    </Card>
   );
 };
 

@@ -6,6 +6,13 @@ type Car = {
   make: string;
 };
 
+type AppliedCoupon = {
+  code: string;
+  label: string;
+  kind: 'percent' | 'fixed';
+  value: number;
+};
+
 export const mockCars: Car[] = [
   { id: '1', type: 'SUV', make: 'Toyota' },
   { id: '2', type: 'Sedan', make: 'Honda' },
@@ -22,7 +29,7 @@ type ReservationState = {
   weeks: number;
   days: number;
   reservationId: string;
-  discount: string;
+  appliedCoupon: AppliedCoupon | null;
   firstName: string;
   lastName: string;
   email: string;
@@ -36,8 +43,7 @@ type ReservationState = {
   setRental: (val: boolean) => void;
   setDatePickup: (val: string) => void;
   setDateReturn: (val: string) => void;
-  setReservationId: (val: string) => void;
-  setDiscount: (val: string) => void;
+  applyCoupon: (coupon: AppliedCoupon | null) => void;
   setFirstName: (val: string) => void;
   setLastName: (val: string) => void;
   setEmail: (val: string) => void;
@@ -48,6 +54,8 @@ type ReservationState = {
   reset: () => void;
 };
 
+const generateReservationId = () => `#RE-${Math.floor(1000 + Math.random() * 9000)}`;
+
 const initialState = {
   products: [] as Car[],
   collision: false,
@@ -57,8 +65,8 @@ const initialState = {
   dateReturn: '',
   weeks: 0,
   days: 0,
-  reservationId: '',
-  discount: '',
+  reservationId: generateReservationId(),
+  appliedCoupon: null as AppliedCoupon | null,
   firstName: '',
   lastName: '',
   email: '',
@@ -76,8 +84,7 @@ export const useReservationStore = create<ReservationState>((set, get) => ({
   setRental: (val) => set({ rental: val }),
   setDatePickup: (val) => set({ datePickup: val }),
   setDateReturn: (val) => set({ dateReturn: val }),
-  setReservationId: (val) => set({ reservationId: val }),
-  setDiscount: (val) => set({ discount: val }),
+  applyCoupon: (coupon) => set({ appliedCoupon: coupon }),
   setFirstName: (val) => set({ firstName: val }),
   setLastName: (val) => set({ lastName: val }),
   setEmail: (val) => set({ email: val }),

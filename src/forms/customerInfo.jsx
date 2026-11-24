@@ -1,6 +1,8 @@
+import { Mail, Phone, User, UserRound } from "lucide-react";
 import { useReservationStore } from "../store/useReservationStore";
+import { Card, Field, SectionHeading } from "../components/ui";
 
-const customerInfo = () => {
+const CustomerInfo = () => {
   const {
     firstName,
     lastName,
@@ -13,76 +15,64 @@ const customerInfo = () => {
   } = useReservationStore();
 
   return (
-    <div className="pt-8 mx-auto max-w-3xl">
-      <h2 className="mb-6 pb-1 text-xl font-medium text-gray-900 border-b-2 border-primary-500">
-        Customer Information
-      </h2>
-      <form action="#">
-        <div className="flex flex-col gap-4 p-4 border border-gray-300 rounded-md">
-          <div className="">
-            <label className="block mb-2 text-sm font-light text-gray-900">
-              First Name <span className="text-red-600">*</span>
-            </label>
-            <input
-              type="text"
-              name="first-name"
-              id="first-name"
-              className="border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-primary-500  block w-full p-2"
-              placeholder="Type first name"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              required
-            />
-          </div>
-          <div className="">
-            <label className="block mb-2 text-sm font-light text-gray-900">
-              Last Name <span className="text-red-600">*</span>
-            </label>
-            <input
-              type="text"
-              name="last-name"
-              id="last-name"
-              className="border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-primary-500 block w-full p-2"
-              placeholder="Type last name"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-              required
-            />
-          </div>
-          <div className="">
-            <label className="block mb-2 text-sm font-light text-gray-900">
-              Email <span className="text-red-600">*</span>
-            </label>
-            <input
-              type="email"
-              name="email"
-              id="email"
-              className="border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-primary-500 block w-full p-2"
-              placeholder="Type email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-          <div className="">
-            <label className="block mb-2 text-sm font-light text-gray-900">
-              Phone <span className="text-red-600">*</span>
-            </label>
-            <input
-              type="text"
-              name="phone"
-              id="phone-input"
-              className="border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-primary-500 block w-full p-2"
-              placeholder="Type phone number"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              required
-            />
-          </div>
-        </div>
+    <Card>
+      <SectionHeading
+        icon={UserRound}
+        title="Customer Information"
+        description="Who is picking up the vehicle?"
+      />
+      <form action="#" className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <Field label="First Name" htmlFor="first-name" icon={User} required>
+          <input
+            type="text"
+            name="first-name"
+            id="first-name"
+            className="field-control pl-10"
+            placeholder="Type first name"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            required
+          />
+        </Field>
+        <Field label="Last Name" htmlFor="last-name" icon={User} required>
+          <input
+            type="text"
+            name="last-name"
+            id="last-name"
+            className="field-control pl-10"
+            placeholder="Type last name"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            required
+          />
+        </Field>
+        <Field label="Email" htmlFor="email" icon={Mail} required>
+          <input
+            type="email"
+            name="email"
+            id="email"
+            className="field-control pl-10"
+            placeholder="Type email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </Field>
+        <Field label="Phone" htmlFor="phone-input" icon={Phone} required>
+          <input
+            type="tel"
+            name="phone"
+            id="phone-input"
+            className="field-control pl-10"
+            placeholder="Type phone number"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            required
+          />
+        </Field>
       </form>
-    </div>
+    </Card>
   );
 };
 
-export default customerInfo;
+export default CustomerInfo;

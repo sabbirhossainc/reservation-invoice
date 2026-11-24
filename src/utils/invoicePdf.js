@@ -28,7 +28,6 @@ const asText = (value) => {
 };
 
 const money = (value) => `$${Number(value).toFixed(2)}`;
-const totalMoney = (value) => `$${value}`;
 
 function applyFont(doc, style, size, color = INK) {
   doc.setFont("helvetica", style);
@@ -190,7 +189,12 @@ function drawRightColumn(doc, data, charges, x, y, width, pageHeight) {
       rate: `${RENTAL_TAX_PERCENT}%`,
       amount: money(charges.taxAmount),
     },
-    { label: "Discount", unit: "", rate: asText(data.discount), amount: "-" },
+    {
+      label: "Discount",
+      unit: "",
+      rate: asText(data.appliedCoupon?.code),
+      amount: data.appliedCoupon ? `-${money(charges.discount)}` : "-",
+    },
   ];
 
   const tableTop = y + 6;
@@ -213,7 +217,7 @@ function drawRightColumn(doc, data, charges, x, y, width, pageHeight) {
   const totalY = tableTop + headerHeight + 10 + rows.length * ROW_HEIGHT + 4;
   tableRow(
     doc,
-    { label: "TOTAL", unit: "", rate: "", amount: totalMoney(charges.total) },
+    { label: "TOTAL", unit: "", rate: "", amount: money(charges.total) },
     x,
     totalY,
     widths,
