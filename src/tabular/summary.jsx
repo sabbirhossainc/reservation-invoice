@@ -1,4 +1,5 @@
 import { useReservationStore } from "../store/useReservationStore";
+import { calculateReservationCharges } from "../utils/reservationCharges.js";
 
 const ChargesSummary = () => {
   const {
@@ -9,15 +10,14 @@ const ChargesSummary = () => {
     rental,
   } = useReservationStore();
 
-  let totalDaysRate = days * 99;
-  let totalWeeksRate = weeks * 390;
-  let collisionRate = collision ? 9 : 0;
-  let liabilityRate = liability ? 15 : 0;
-  let rentalRate = rental ? 11.5 : 0;
-
-  let withRentalRate = (totalDaysRate + totalWeeksRate + collisionRate + liabilityRate) * (rentalRate / 100);
-
-  let total = totalDaysRate + totalWeeksRate + collisionRate + liabilityRate + withRentalRate;
+  const {
+    daily,
+    weekly,
+    waiver,
+    liability: liabilityCharge,
+    taxRate,
+    total,
+  } = calculateReservationCharges({ weeks, days, collision, liability, rental });
 
   return (
     <div className="pt-8 max-w-3xl">
@@ -47,31 +47,31 @@ const ChargesSummary = () => {
               <td className="px-2 py-4 ">Daily</td>
               <td className="px-2 py-4 ">{days}</td>
               <td className="px-2 py-4 ">$99.00</td>
-              <td className="px-2 py-4 ">${totalDaysRate}.00</td>
+              <td className="px-2 py-4 ">${daily}.00</td>
             </tr>
             <tr>
               <td className="px-2 py-4 ">Weekly</td>
               <td className="px-2 py-4 ">{weeks}</td>
               <td className="px-2 py-4 ">$390.00</td>
-              <td className="px-2 py-4 ">${totalWeeksRate}.00</td>
+              <td className="px-2 py-4 ">${weekly}.00</td>
             </tr>
             <tr className={`${collision ? "" : "hidden"}`} >
               <td className="px-2 py-4">Collision Damage Waiver</td>
               <td></td>
               <td className="px-2 py-4">$9.00</td>
-              <td className="px-2 py-4">${collisionRate}.00</td>
+              <td className="px-2 py-4">${waiver}.00</td>
             </tr>
             <tr className={`${liability ? "" : "hidden"}`}>
               <td className="px-2 py-4">Liability Insurance</td>
               <td></td>
               <td className="px-2 py-4">$15.00</td>
-              <td className="px-2 py-4">${liabilityRate}.00</td>
+              <td className="px-2 py-4">${liabilityCharge}.00</td>
             </tr>
             <tr className={`${rental ? "" : "hidden"}`}>
               <td className="px-2 py-4">Rental Tax</td>
               <td></td>
               <td></td>
-              <td className="px-2 py-4">{rentalRate}%</td>
+              <td className="px-2 py-4">{taxRate}%</td>
             </tr>
           </tbody>
           <thead className="">
